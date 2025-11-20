@@ -18,8 +18,8 @@ public class Apk {
             supermercado.addNewCliente();
         }
 
-        Thread.sleep(40000);
-        //estado.interrupt();
+        Thread.sleep(45000);
+        estado.interrupt();
 
         System.out.println(supermercado.getInforme());
 

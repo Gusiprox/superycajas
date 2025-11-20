@@ -40,11 +40,11 @@ public class Supermercado {
 
     public String getInforme(){
 
-        final String TITULO = "Informe Cajas"; 
+        final String TITULO = "Informe Cajas: "; 
 
         StringBuilder msg = new StringBuilder();
 
-        msg.append(TITULO);
+        msg.append(SALTO_LINEA).append(TITULO);
 
         for (Caja caja : cajas) {
             msg.append(caja.getInforme());
