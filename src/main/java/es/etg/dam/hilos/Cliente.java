@@ -2,16 +2,17 @@ package es.etg.dam.hilos;
 
 import java.util.Random;
 import es.etg.dam.crit.Caja;
+import es.etg.dam.crit.Supermercado;
 
 public class Cliente implements Runnable{
     final int TIEMPO_MAXIMO = 3000;
     final int TIEMPO_MINIMO = 1000;
 
-    private Caja caja;
+    private Supermercado supermercado;
 
-    public Cliente(Caja caja){
+    public Cliente(Supermercado supermercado){
 
-        this.caja = caja;
+        this.supermercado = supermercado;
     }
 
     @Override
@@ -19,8 +20,8 @@ public class Cliente implements Runnable{
 
         try {
 
-            //Thread.sleep(getRandomWait());
-            caja.entrar();
+            Thread.sleep(getRandomWait());
+            supermercado.getBestCaja().entrar();
 
         } catch (InterruptedException e) {
             e.printStackTrace();

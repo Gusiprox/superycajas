@@ -10,37 +10,78 @@ public class Supermercado {
 
     final String SALTO_LINEA = "\n";
 
-    
     private List<Caja> cajas = new ArrayList<>();
 
-    public Supermercado(int numCajas){
+    public Supermercado(int numCajas) {
 
-        for (int i = 1; i < numCajas+1; i++) {
+        for (int i = 1; i < numCajas + 1; i++) {
             abrirCaja(i);
         }
 
     }
 
-    public void addNewCliente(){
+    public void addNewCliente() {
 
-        Thread cliente = new Thread(new Cliente(getBestCaja()));
+        Thread cliente = new Thread(new Cliente(this));
         cliente.start();
 
     }
 
-    public String getEstadoCajas(){
+    public String getEstadoCajas() {
 
         StringBuilder estado = new StringBuilder();
 
         for (Caja caja : cajas) {
-            estado.append(caja.getEstado()).
-                append(SALTO_LINEA);
+            estado.append(caja.getEstado()).append(SALTO_LINEA);
         }
 
         return estado.toString();
     }
 
-    private void abrirCaja(int numero){
+    public String getInforme(){
+
+        final String TITULO = "Informe Cajas"; 
+
+        StringBuilder msg = new StringBuilder();
+
+        msg.append(TITULO);
+
+        for (Caja caja : cajas) {
+            msg.append(caja.getInforme());
+        }
+
+        return msg.toString();
+
+    }
+
+    public Caja getBestCaja() {
+
+        final int DEFAULT_VALUE = 0;
+        final boolean DEFAULT_VALUE_CAJAS = true;
+
+        boolean isCajasLlenas = DEFAULT_VALUE_CAJAS;
+        int idCajaMasLibre = DEFAULT_VALUE;
+        int numCajaMasLibre = cajas.get(DEFAULT_VALUE).getNumPersonas();
+
+        while (isCajasLlenas) {
+
+            for (Caja caja : cajas) {
+
+                int numeroPCajaActual = caja.getNumPersonas();
+
+                if (numeroPCajaActual < caja.getNumMaximoPPer()) {
+                    isCajasLlenas = false;
+                }
+
+                if (numeroPCajaActual < numCajaMasLibre) {
+                    idCajaMasLibre = cajas.indexOf(caja);
+                }
+            }
+        }
+        return cajas.get(idCajaMasLibre);
+    }
+
+    private void abrirCaja(int numero) {
 
         final String NOMBRE_CAJA = "Caja%s".formatted(numero);
 
@@ -53,28 +94,5 @@ public class Supermercado {
 
     }
 
-    private Caja getBestCaja(){
-
-        final int DEFAULT_VALUE = 0;
-        final boolean DEFAULT_VALUE_CAJAS = true;
-
-        boolean isCajasLlenas = DEFAULT_VALUE_CAJAS;
-        int idCajaMasLibre = DEFAULT_VALUE;
-        int numCajaMasLibre = cajas.get(DEFAULT_VALUE).getNumPersonas();
-            
-        for (Caja caja : cajas) {
-
-            int numeroPCajaActual = caja.getNumPersonas();
-
-            if (numeroPCajaActual < caja.getNumMaximoPPer()) {
-                isCajasLlenas = false;
-            }
-
-            if (numeroPCajaActual < numCajaMasLibre) {
-                idCajaMasLibre = cajas.indexOf(caja);
-            }
-        }
-        return cajas.get(idCajaMasLibre);
-    }
 
 }

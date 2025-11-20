@@ -2,11 +2,14 @@ package es.etg.dam.crit;
 
 public class Caja{
 
+    final String ESPACIO = " ";
+    final String SALTO_LINEA = "\n";
     private final int NUMERO_MAXIMO_EN_CAJA = 10;
 
     private long finUltimaVenta;
     private long tMaximo;
-    private long tMinimo;
+    private long tMinimo = 4000;
+    private int numPersonasAtendidas = 0;
 
     private int numPersonas = 0;
     private String nomCaja;
@@ -23,7 +26,7 @@ public class Caja{
         }
 
         numPersonas--;
-
+        numPersonasAtendidas++;
         long finVenta = getCurrentTime();
 
         long tiempoTotalVenta = finVenta - finUltimaVenta;
@@ -46,9 +49,24 @@ public class Caja{
 
     }
 
+    public String getInforme(){
+        String strgNombre = "%s:".formatted(nomCaja);
+        String strgPersonasAtendidas = "Personas atendidas: %d".formatted(numPersonasAtendidas);
+        String strgTMaximo = "Tiempo maximo: %d".formatted(tMaximo);
+        String strgTMinimo = "Tiempo minimo: %d".formatted(tMinimo);
+
+        StringBuilder msg = new StringBuilder();
+
+        msg.append(strgNombre).append(SALTO_LINEA).
+            append(ESPACIO).append(strgPersonasAtendidas).append(SALTO_LINEA).
+            append(ESPACIO).append(strgTMaximo).append(SALTO_LINEA).
+            append(ESPACIO).append(strgTMinimo).append(SALTO_LINEA).append(SALTO_LINEA);
+
+        return msg.toString();
+    }
+
     public String getEstado(){
         final String NOM_CAJA = "Caja numero %s: ".formatted(nomCaja);
-        final String ESPACIO = " ";
         final String CHAR_ESPERANDO = "O";
         final String CHAR_VACIO = "-";
 
@@ -86,7 +104,8 @@ public class Caja{
 
         if (tiempoTotalVenta > tMaximo) {
             tMaximo = tiempoTotalVenta;
-        } else if(tiempoTotalVenta < tMinimo){
+        } 
+        if(tiempoTotalVenta < tMinimo){
             tMinimo = tiempoTotalVenta;
         }
     }
