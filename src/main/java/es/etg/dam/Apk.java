@@ -1,16 +1,22 @@
 package es.etg.dam;
 
-import es.etg.dam.crit.Caja;
-import es.etg.dam.hilos.Cliente;
-import es.etg.dam.hilos.Vendedor;
+import es.etg.dam.crit.Supermercado;
+import es.etg.dam.hilos.ComunicadorEstado;
 
 public class Apk {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException{
 
-        Caja caja = new Caja();
+        //final int TIEMPO_ESPERA_ESTADO = 1000;
+        final int CAJAS_CREADAS = 7;
+        final int CLIENTES_ENTRANTES = 100;
 
-        Vendedor vendedor = new Vendedor(caja);
+        Supermercado supermercado = new Supermercado(CAJAS_CREADAS);
 
-        Cliente cliente = new Cliente(caja);
+        Thread estado = new Thread(new ComunicadorEstado(supermercado));
+        estado.start();
+
+        for (int i = 0; i < CLIENTES_ENTRANTES; i++) {
+            supermercado.addNewCliente();
+        }
     }
 }
